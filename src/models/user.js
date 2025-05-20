@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema({
     profilePicture: {
         type: String,
         default: 'https://i.imgur.com/WxNkK7J.png'
+        // type: mongoose.Schema.Types.ObjectId,
+        // ref: 'fs.files',
     },
     role: {
         type: String,

@@ -5,7 +5,7 @@ const generateToken = require("../utils/jwt");
 const User = require("../models/user");
 
 const register = async (req = request, res = response) => {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
     try {
         const user = await User.findOne({email});
         if (user) {
@@ -13,7 +13,7 @@ const register = async (req = request, res = response) => {
                 message: "El correo ya esta registrado"
             });
         }
-        const newUser = new User({ name, email, password, role });
+        const newUser = new User({ name, email, password });
         await newUser.save();
         res.json({
             message: `El usuario con el correo ${email} ha sido creado`,
