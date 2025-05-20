@@ -22,6 +22,7 @@ const {
  * /api/users/{_id}:
  *  get:
  *     summary: Obtener un usuario por su ID
+ *     tags: [Users]
  *     description: Recupera la información de un usuario específico.
  *     parameters:
  *       - in: path
@@ -71,6 +72,7 @@ router.get('/:_id', getUserById);
  * /api/users:
  *   get:
  *     summary: Obtener todos los usuarios
+ *     tags: [Users]
  *     description: Recupera la lista de todos los usuarios registrados.
  *     responses:
  *       200:
@@ -105,6 +107,7 @@ router.get('/:_id', getUserById);
  * /api/users/{_id}:
  *   put:
  *     summary: Actualizar los datos de un usuario
+ *     tags: [Users]
  *     description: Actualiza los datos del usuario especificado por el ID.
  *     parameters:
  *       - in: path
@@ -162,6 +165,7 @@ router.put('/:_id', updateUser);
  * /api/users/{_id}:
  *   delete:
  *     summary: Eliminar un usuario
+ *     tags: [Users]
  *     description: Elimina un usuario especificado por su ID.
  *     parameters:
  *       - in: path
@@ -204,6 +208,7 @@ router.put('/:_id', verifyToken, disableUser);
  * /api/users/{_id}/profile_picture:
  *   put:
  *     summary: Actualizar la foto de perfil de un usuario
+ *     tags: [Users]
  *     description: Permite al usuario actualizar su foto de perfil.
  *     parameters:
  *       - in: path
@@ -256,6 +261,7 @@ router.put('/:_id/profile-picture', verifyToken, upload.single('profilePicture')
  * /api/users/{_id}/password:
  *   put:
  *     summary: Actualizar la contraseña de un usuario
+ *     tags: [Users]
  *     description: Permite al usuario actualizar su contraseña.
  *     parameters:
  *       - in: path
@@ -302,8 +308,123 @@ router.put('/:_id/profile-picture', verifyToken, upload.single('profilePicture')
  *         description: Error interno al actualizar la contraseña
  */
 router.put('/:_id/password', verifyToken, updateUserPassword);
+
+/**
+ * @swagger
+ * /api/users/{_id}/unfollow:
+ *   put:
+ *     summary: Dejar de seguir a un usuario
+ *     tags: [Users]
+ *     description: Permite al usuario actual dejar de seguir a otro usuario especificado por el ID.
+ *     parameters:
+ *       - in: path
+ *         name: _id
+ *         required: true
+ *         description: ID del usuario al que se desea dejar de seguir.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               followerId:
+ *                 type: string
+ *                 description: ID del usuario que deja de seguir.
+ *                 example: "6650e07199e65b9a589d1522"
+ *     responses:
+ *       200:
+ *         description: Usuario dejado de seguir exitosamente.
+ *       400:
+ *         description: El usuario no está siguiendo al usuario especificado o datos inválidos.
+ *       404:
+ *         description: Usuario no encontrado.
+ *       500:
+ *         description: Error interno al dejar de seguir al usuario.
+ */
 router.put('/:_id/unfollow', unfollowUser);
+
+/**
+ * @swagger
+ * /api/users/{_id}/follow:
+ *   put:
+ *     summary: Seguir a un usuario
+ *     tags: [Users]
+ *     description: Permite al usuario actual seguir a otro usuario especificado por el ID.
+ *     parameters:
+ *       - in: path
+ *         name: _id
+ *         required: true
+ *         description: ID del usuario que se desea seguir.
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               followerId:
+ *                 type: string
+ *                 description: ID del usuario que está siguiendo.
+ *                 example: "6650e07199e65b9a589d1522"
+ *     responses:
+ *       200:
+ *         description: Usuario seguido exitosamente.
+ *       400:
+ *         description: El usuario ya sigue a este usuario o datos inválidos.
+ *       404:
+ *         description: Usuario no encontrado.
+ *       500:
+ *         description: Error interno al seguir al usuario.
+ */
+
 router.put('/:_id/follow', followUser);
+
+/**
+ * @swagger
+ * /api/users/{_id}/followers:
+ *   get:
+ *     summary: Obtener los seguidores de un usuario
+ *     tags: [Users]
+ *     description: Recupera la lista de usuarios que siguen al usuario especificado por su ID.
+ *     parameters:
+ *       - in: path
+ *         name: _id
+ *         required: true
+ *         description: ID del usuario cuyos seguidores se desean obtener.
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Lista de seguidores obtenida exitosamente.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     example: "6650e07199e65b9a589d1522"
+ *                   name:
+ *                     type: string
+ *                     example: "María López"
+ *                   email:
+ *                     type: string
+ *                     example: "maria@gmail.com"
+ *                   profilePicture:
+ *                     type: string
+ *                     example: "https://i.imgur.com/example.png"
+ *       404:
+ *         description: Usuario no encontrado.
+ *       500:
+ *         description: Error interno al obtener los seguidores.
+ */
 router.get('/:_id/followers', getFollowersByUserId)
 
 module.exports = router;
