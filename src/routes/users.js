@@ -6,11 +6,15 @@ const upload = createUploadMiddleware('profile_pictures');
 
 const { 
     getUserById,
-    getUsers,
     updateUser,
-    deleteUser,
+    disableUser,
     updateUserProfilePicture,
-    updateUserPassword
+    updateUserPassword,
+
+
+    followUser,
+    unfollowUser,
+    getFollowersByUserId
  } = require('../controllers/users');
 
 /**
@@ -46,7 +50,7 @@ const {
  *                 role:
  *                   type: string
  *                   example: "user"
- *       400:
+ *       404:
  *         description: Usuario no encontrado
  *       500:
  *         description: Error interno al obtener el usuario
@@ -59,7 +63,7 @@ const {
  *                   type: string
  *                   example: "Internal server error"
  */
-router.get('/:_id', verifyToken, getUserById);
+router.get('/:_id', getUserById);
 
 
 /**
@@ -94,7 +98,7 @@ router.get('/:_id', verifyToken, getUserById);
  *       500:
  *         description: Error interno al obtener los usuarios
  */
-router.get('/', verifyToken, getUsers);
+//router.get('/', verifyToken, getUsers);
 
 /**
  * @swagger
@@ -151,7 +155,7 @@ router.get('/', verifyToken, getUsers);
  *       500:
  *         description: Error interno al actualizar el usuario
  */
-router.put('/:_id', verifyToken, updateUser);
+router.put('/:_id', updateUser);
 
 /**
  * @swagger
@@ -193,7 +197,7 @@ router.put('/:_id', verifyToken, updateUser);
  *       500:
  *         description: Error interno al eliminar el usuario
  */
-router.delete('/:_id', verifyToken, deleteUser);
+router.put('/:_id', verifyToken, disableUser);
 
 /**
  * @swagger
@@ -298,5 +302,8 @@ router.put('/:_id/profile-picture', verifyToken, upload.single('profilePicture')
  *         description: Error interno al actualizar la contraseña
  */
 router.put('/:_id/password', verifyToken, updateUserPassword);
+router.put('/:_id/unfollow', unfollowUser);
+router.put('/:_id/follow', followUser);
+router.get('/:_id/followers', getFollowersByUserId)
 
 module.exports = router;

@@ -14,6 +14,11 @@ mongoose.connect(mongoDataBaseURI)
 
 app.use('/api/users', require('./src/routes/users'));
 app.use('/api/auth', require('./src/routes/auth'));
+app.use('/api/categories', require('./src/routes/categories'));
+app.use('/api/posts', require('./src/routes/posts'));
+app.use('/api/answers', require('./src/routes/answers'));
+app.use('/api/ratings', require('./src/routes/ratings'));
+app.use('/api/reports', require('./src/routes/reports'));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

@@ -19,15 +19,33 @@ const postSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    category: {
+    categories:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Category',
         required: true
-    },
+    }],
     isResolved: {
         type: Boolean,
         default: false
-    }
+    },
+    views : {
+        type : Number, 
+        default : 0
+    },
+    likes : {
+        type : Number,
+        default : 0
+    },
+    totalAnswers : {
+        type : Number,
+        default : 0
+    },
+    status : {
+       type: String,
+       required : true,
+       enum: ['Active', 'Inactive'],
+               default: 'Active'
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Post', postSchema);
